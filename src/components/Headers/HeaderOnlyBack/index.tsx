@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StyledComponent } from "nativewind";
 import { useState } from "react";
 
-export default function HeaderBackPlus({ title }) {
+export default function HeaderOnlyBack({ title }) {
   const navigation = useNavigation();
   const [show, setShow] = useState(false);
 
