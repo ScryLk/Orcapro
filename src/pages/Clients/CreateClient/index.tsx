@@ -2,16 +2,58 @@ import { Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
 import HeaderOnlyBack from "../../../components/Headers/HeaderOnlyBack";
 import { useState } from "react";
 import { StyledComponent } from "nativewind";
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function CreateClient() {
   const [client, setClient] = useState("");
   const [company, setCompany] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const navigation = useNavigation();
 
-  function sendData() {
+  async function sendData() {
     console.log(client, email, company, phone);
-    Alert.alert("Sucesso", "Cliente cadastrado com sucesso!");
+    if (client === "" || email === "" || company === "" || phone === "") {
+      Alert.alert("Erro", "Preencha todos os campos");
+      return;
+    }
+    const token = await AsyncStorage.getItem('token');
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const raw = JSON.stringify({
+      name: client,
+      email: email,
+      company: company,
+      phone: phone,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow' as RequestRedirect  // Fix here
+
+    };
+
+    try {
+      let result = await fetch(
+        "http://192.168.1.113:3000/clientes/", requestOptions)
+      let json = await result.json();
+
+      if (json.success) {
+        Alert.alert('Sucesso', 'Cliente criado com sucesso');
+        navigation.navigate('Clients');
+      } else {
+        Alert.alert('Erro', json.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+      Alert.alert('Erro', 'Erro ao criar cliente');
+    }
+
   }
 
   return (
