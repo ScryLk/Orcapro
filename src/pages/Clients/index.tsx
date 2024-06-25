@@ -28,7 +28,7 @@ export default function Clients() {
         };
 
         try {
-            const response = await fetch("http://192.168.1.113:3000/clientes", requestOptions);
+            const response = await fetch("http://192.168.0.155:3000/clientes", requestOptions);
             const data = await response.json();
             if (data.success) {
                 setClientes(data.clientes);

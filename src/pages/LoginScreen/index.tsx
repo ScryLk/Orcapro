@@ -40,7 +40,7 @@ export default function LoginScreen() {
         };
 
         try {
-            let result = await fetch("http://192.168.1.113:3000/users/login", requestOptions);
+            let result = await fetch("http://192.168.0.155:3000/users/login", requestOptions);
             let json = await result.json();
 
             if (json.success) {

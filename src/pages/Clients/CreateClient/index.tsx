@@ -40,7 +40,7 @@ export default function CreateClient() {
 
     try {
       let result = await fetch(
-        "http://192.168.1.113:3000/clientes/", requestOptions)
+        "http://192.168.0.155:3000/clientes/", requestOptions)
       let json = await result.json();
 
       if (json.success) {
